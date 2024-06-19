@@ -75,7 +75,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
-          <button type="submit" id="save" class="btn btn-primary disabled">Register</button>
+          <button type="submit" id="save" class="btn btn-primary disabled btnOption">Register</button>
         </div>
       </div>
     </div>

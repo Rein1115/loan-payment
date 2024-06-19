@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Area;
 use Illuminate\Support\Facades\Validator;
+use Exception; // Import PHP's native Exception class
+
 
 class AreaController extends Controller
 {

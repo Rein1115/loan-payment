@@ -13,7 +13,7 @@
 
                     <label for="addareacode" class="col-md-4 col-form-label text-md-end">{{ __('Area code') }}</label>
                     <div class="col-md-6">
-                        <input id="addareacode" type="text" class="form-control" name="addareacode" value="{{ old('areacode') }}" required autocomplete="areacode" autofocus>
+                        <input id="addareacode" type="number" class="form-control" name="addareacode" value="{{ old('areacode') }}" required autocomplete="areacode" autofocus>
             
                         
                     </div>
