@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Area\AreaController;
+use App\Http\Controllers\Collector\CollectorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('user',UserController::class)->names('user');
         Route::resource('area',AreaController::class)->names('area');
+        Route::resource('collector',CollectorController::class)->names('collector');
 
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
