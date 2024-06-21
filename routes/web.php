@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Area\AreaController;
 use App\Http\Controllers\Collector\CollectorController;
+use App\Http\Controllers\menus\MenusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +29,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('user',UserController::class)->names('user');
         Route::resource('area',AreaController::class)->names('area');
+        Route::get('area/fetch/{id}', [Controller::class, 'getAreas'])->name('area.fetch');
         Route::resource('collector',CollectorController::class)->names('collector');
-
+        Route::resource('menus',MenusController::class)->names('menus');
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

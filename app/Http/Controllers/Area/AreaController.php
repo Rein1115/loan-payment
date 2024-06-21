@@ -14,8 +14,15 @@ class AreaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax()){
+            $data = Area::all();
+
+            return response()->json(['success'=>true,'response' => $data]);
+        }
+
+
         return view('area.area-list');
     }
 
@@ -36,7 +43,7 @@ class AreaController extends Controller
          try {
             // Define validation rules
             $validator = Validator::make($request->all(), [
-                'addareacode' => ['required', 'string', 'max:255','unique:areas,areacode'],
+                'addareacode' => ['required', 'string', 'max:255'],
                 'municipality' => ['required', 'string', 'max:255'],
                 'barangay' => ['required', 'string', 'max:255'],
                 'purok' => ['required', 'string', 'max:255', ],
@@ -66,6 +73,27 @@ class AreaController extends Controller
         }catch(Exception $e){
             return response()->json(['success' => false, 'response' => $e->getMessage()]);
         }
+    }
+
+
+    public function getAres(string $areacode){
+
+        try{
+            $ares = Area::where('areacode', $areacode)->all();
+
+            return response()->json([
+                'success' => true,
+                'resoponse' => $areacode
+            ], 200);
+        }
+        catch(Exception $e){
+            return response()->json(['success' => false, 'response' => $e->getMessage()]);
+
+        }
+
+        
+
+
     }
 
     /**

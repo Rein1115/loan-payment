@@ -11,15 +11,15 @@
     </nav>
 </div><!-- End Page Title -->
 
-<div class="container">
-   
-</div>
+
+
 
 <section class="section add-user-section">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                   
 
                     <!-- Table with stripped rows -->
                     <table id="mytable" class="display" style="width:100%">

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('mname')->nullable(); 
             $table->string('lname'); 
             $table->string('fullname'); 
-            $table->string('userid'); 
             $table->integer('areaid');
             $table->timestamps();
         });

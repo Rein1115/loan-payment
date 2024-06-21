@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Collector;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 class CollectorController extends Controller
 {
     /**
@@ -14,13 +15,15 @@ class CollectorController extends Controller
      */
     public function index(Request $request)
     {   
-        $data = DB::select('SELECT c.id as ids,c.* , a.* FROM collectors as c INNER JOIN areas as a ON c.areaid = a.id');
+        $data = $this->menus();
+        
+        $datas = DB::select('SELECT c.id as ids,c.* , a.* FROM collectors as c INNER JOIN areas as a ON c.areaid = a.id');
 
         if($request->ajax()){
-            return response()->json(['success' => true, 'response' => $data]);
+            return response()->json(['success' => true, 'response' => $datas]);
         }
 
-        return view('collector.collector-list');
+        return view('collector.collector-list',compact('data'));
     }
 
     /**
@@ -37,6 +40,42 @@ class CollectorController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            // Define validation rules
+            $validator = Validator::make($request->all(), [
+                'fname' => ['required', 'string'],
+                'mname' => ['nullable', 'string'],
+                'lname' => ['required', 'string'],
+                'fullname' => ['required', 'string'],
+                'areaid' => ['required', 'integer', 'unique:collectors,areaid'],
+            ]);
+            
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'response' => $validator->errors()
+                ], 200);
+            }else{
+                    $collector = new Collector();
+                    $collector->fname = $request->fname;
+                    $collector->mname = $request->mname;
+                    $collector->lname = $request->lname;
+                    $collector->fullname = $request->fullname;
+                    $collector->areaid = $request->areaid;
+                    $collector->save();
+                    // Return a success response
+                    return response()->json([
+                        'success' => true,
+                        'response' => 'Collector created successfully',
+                        'user' => $collector
+                    ], 201); 
+            }
+        }catch(Exception $e){
+            return response()->json(['success' => false, 'response' => $e->getMessage()]);
+        }
+
     }
 
     /**
@@ -67,6 +106,40 @@ class CollectorController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            // Define validation rules
+            $validator = Validator::make($request->all(), [
+                'fname' => ['required', 'string'],
+                'mname' => ['nullable', 'string'],
+                'lname' => ['required', 'string'],
+                'fullname' => ['required', 'string'],
+                'areaid' => ['required', 'integer'],
+            ]);
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'response' => $validator->errors()
+                ], 200);
+            }else{
+                    $collector = Collector::find($id);
+                    $collector->fname = $request->fname;
+                    $collector->mname = $request->mname;
+                    $collector->lname = $request->lname;
+                    $collector->fullname = $request->fullname;
+                    $collector->areaid = $request->areaid;
+                    $collector->save();
+                    // Return a success response
+                    return response()->json([
+                        'success' => true,
+                        'response' => 'Collector Updated successfully',
+                        'user' => $collector
+                    ], 201); 
+            }
+        }catch(Exception $e){
+            return response()->json(['success' => false, 'response' => $e->getMessage()]);
+        }
     }
 
     /**

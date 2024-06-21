@@ -14,8 +14,7 @@ class Collector extends Model
         'mname',
         'lname',
         'fullname',
-        'userid',
         'areaid'
     ];
-    
+
 }
