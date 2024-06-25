@@ -59,7 +59,8 @@ class Controller extends BaseController
             for($um = 0; $um < count($menu['usermodules']); $um++){
                 // return $menu['usermodules'][$um];
                 $function = [];
-                $menu['userfunctions'] = DB::select('SELECT mf.* FROM userfunctions as uf LEFT JOIN menu_functions as mf ON uf.mfunctions_id = mf.id WHERE uf.mmodules_id = '.$menu['usermodules'][$um]->u_id.'' );
+                $menu['userfunctions'] = DB::select('SELECT mf.* FROM userfunctions as uf LEFT JOIN menu_functions as mf ON uf.mfunctions_id = mf.id WHERE uf.mmodules_id = ? AND uf.user_id = ?', [$menu['usermodules'][$um]->u_id, Auth::user()->id]);
+
 
                 for($uf = 0; $uf<count($menu['userfunctions']); $uf++){
                     $function[$uf] = [
