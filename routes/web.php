@@ -6,6 +6,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Area\AreaController;
 use App\Http\Controllers\Collector\CollectorController;
 use App\Http\Controllers\menus\MenusController;
+use App\Http\Controllers\client\ClientController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +37,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+    Route::group(['prefix' => 'client', 'as' => 'client.'], function(){
+        Route::controller(ClientController::class)->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::get('list', 'list')->name('list');
+            Route::get('add', 'add')->name('add');
+            Route::get('edit/{id?}', 'edit')->name('edit');
+            Route::post('save/{id?}', 'save')->name('save');
+            Route::get('find/{id?}', 'find')->name('find');
+            Route::delete('delete/{id?}', 'delete')->name('delete');
+        });
+    });
+    
 });
