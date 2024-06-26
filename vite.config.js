@@ -15,7 +15,9 @@ export default defineConfig({
 
                 'resources/js/tools/axios.js',
                 'resources/js/tools/jquery.js',
-                'resources/js/tools/import.js'
+                'resources/js/tools/import.js',
+
+                'resources/js/client/clientdetails.js'
             ],
             refresh: true,
         }),
