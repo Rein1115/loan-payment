@@ -13,6 +13,7 @@ class Client extends Model
 		'lastname',
 		'dob',
 		'gender',
+		'civil_status',
 		'edu_att',
 		'religion',
 		'present_add',

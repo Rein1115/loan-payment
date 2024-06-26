@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->string('lastname')->required();
                 $table->datetime('dob')->required();
                 $table->string('gender')->required();
+                $table->string('civil_status')->required();
                 $table->string('edu_att')->required();
                 $table->string('religion')->required();
                 $table->string('present_add')->required();

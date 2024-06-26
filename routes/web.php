@@ -6,7 +6,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Area\AreaController;
 use App\Http\Controllers\Collector\CollectorController;
 use App\Http\Controllers\menus\MenusController;
-use App\Http\Controllers\client\ClientController;
+use App\Http\Controllers\Client\ClientController;
 
 
 /*
@@ -20,10 +20,7 @@ use App\Http\Controllers\client\ClientController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
@@ -33,7 +30,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('area',AreaController::class)->names('area');
         Route::get('area/fetch/{id}', [Controller::class, 'getAreas'])->name('area.fetch');
         Route::resource('collector',CollectorController::class)->names('collector');
+        // Route::resource('client',ClientController::class)->names('client');
         Route::resource('menus',MenusController::class)->names('menus');
+        // Route::post('client-save', [ClientController::Class,'save'])->name('client.save');
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -41,12 +40,12 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'client', 'as' => 'client.'], function(){
         Route::controller(ClientController::class)->group(function () {
             Route::get('', 'index')->name('index');
-            Route::get('list', 'list')->name('list');
+            Route::get('/list', 'list')->name('list');
             Route::get('add', 'add')->name('add');
             Route::get('edit/{id?}', 'edit')->name('edit');
-            Route::post('save/{id?}', 'save')->name('save');
+            Route::post('client/save/{id?}', 'save')->name('saveclient');
             Route::get('find/{id?}', 'find')->name('find');
-            Route::delete('delete/{id?}', 'delete')->name('delete');
+            Route::delete('/delete/{id?}', 'delete')->name('delete');
         });
     });
     

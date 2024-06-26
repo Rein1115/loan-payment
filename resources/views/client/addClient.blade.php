@@ -10,9 +10,9 @@
             <h1>{{ $title }}</h2>
         </div>
 		<div class="col-md-12">
-			<form method="post" class="needs-validation" id="client_form" action="{{ route('client.save') }}/{{ $client->id ?? '' }}" novalidate>
+			<form method="post" class="needs-validation" id="client_form" novalidate>
 				<div class="row">
-					<input type="hidden" name="id" id="id" value="{{ $client->id ?? '' }}"/>
+					<input type="hidden" name="id" id="id" value="{{ $client->id ?? '0' }}"/>
 					<div class="col-md-4 mb-3">
 						<label class="mb-2">Firstname</label>
 						<input type="text" name="firstname" id="firstname" class="form-control " required value="{{ $client->firstname ?? '' }}" placeholder="Enter first name"/>
@@ -29,18 +29,27 @@
 						<label class="mb-2">Dob</label>
 						<input type="date" name="dob" id="dob" class="form-control " required value="{{ $client->dob ?? '' }}" placeholder="Enter date of birth"/>
 					</div>
+
 					<div class="col-md-2 mb-3">
 						<label class="mb-2">Gender</label>
 						<select name="gender" id="gender" class="form-control " required>
                             <option value="male">Male</option>
-                            <option value="male">Male</option>
+                            <option value="female">Female</option>
 						</select>
 					</div>
-					<div class="col-md-4 mb-3">
+					<div class="col-md-2 mb-3">
+						<label class="mb-2">Civil Status</label>
+						<select name="civil_status" id="civil_status" class="form-control " required>
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+							<option value="widow">Widow</option>
+						</select>
+					</div>
+					<div class="col-md-3 mb-3">
 						<label class="mb-2">Edu att</label>
 						<input type="text" name="edu_att" id="edu_att" class="form-control " required value="{{ $client->edu_att ?? '' }}" placeholder="Enter highest educational attainment"/>
 					</div>
-					<div class="col-md-3 mb-3">
+					<div class="col-md-2 mb-3">
 						<label class="mb-2">Religion</label>
 						<input type="text" name="religion" id="religion" class="form-control " required value="{{ $client->religion ?? '' }}" placeholder="Enter religion"/>
 					</div>
@@ -127,23 +136,6 @@
 @endsection
 
 @section('script')
-<script>
-    document.getElementById('client_form_btn').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const form = document.getElementById('client_form');
-            const formData = new FormData(form);
-            const url = form.action;
-            axios.post(url, formData)
-                .then(response => {
-                    console.log('Form submitted successfully:', response);
-                    // Handle success - you can redirect or show a success message here
-                })
-                .catch(error => {
-                    console.error('Error submitting form:', error);
-                    // Handle error - show error message to the user
-                });
-        });
-    </script>
-</script>
+@vite('resources/js/client/clientdetail.js')
 @vite('resources/js/tools/import.js')
 @endsection

@@ -16,13 +16,12 @@ class ClientController extends Controller
 	}
 
 	public function list(){
-		$client = Client::get();
+		$client = Client::all();
 		return response()->json(['status' => true, 'data' => $client ]);
 	}
 
-	public function save(Request $request, $id = ""){
+	public function save(Request $request, $id){
 
-        dd($request);
 
 		$validator = Validator::make($request->all(), [
 			'firstname' => 'required',
@@ -30,6 +29,7 @@ class ClientController extends Controller
 			'lastname' => 'required',
 			'dob' => 'required',
 			'gender' => 'required',
+			'civil_status' => 'required',
 			'edu_att' => 'required',
 			'religion' => 'required',
 			'present_add' => 'required',
@@ -55,13 +55,14 @@ class ClientController extends Controller
 		if($validator->fails()){
 			return response()->json(['status' => false, 'error' => $validator->errors() ]);
 		}else{
-			if(!empty($id)){
+			if($id != '0'){
 				$client = Client::where('id', $id)->update([
 					'firstname' => $request->get('firstname'),
 					'middlename' => $request->get('middlename'),
 					'lastname' => $request->get('lastname'),
 					'dob' => $request->get('dob'),
 					'gender' => $request->get('gender'),
+					'civil_status' => $request->get('civil_status'),
 					'edu_att' => $request->get('edu_att'),
 					'religion' => $request->get('religion'),
 					'present_add' => $request->get('present_add'),
@@ -93,6 +94,7 @@ class ClientController extends Controller
 					'lastname' => $request->get('lastname'),
 					'dob' => $request->get('dob'),
 					'gender' => $request->get('gender'),
+					'civil_status' => $request->get('civil_status'),
 					'edu_att' => $request->get('edu_att'),
 					'religion' => $request->get('religion'),
 					'present_add' => $request->get('present_add'),
@@ -115,7 +117,7 @@ class ClientController extends Controller
 					'client_add_sketch' => $request->get('client_add_sketch'),
 				]);
 				if($client){
-					return response()->json(['status' => true, 'message' => 'client updated successfully!']);
+					return response()->json(['status' => true, 'message' => 'client created successfully!']);
 				}
 			}
 		}
