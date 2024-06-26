@@ -6,11 +6,11 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-            <a href="{{route('client.index')}}">Go back</a>
+            <a href="{{route('clients.index')}}">Go back</a>
             <h1>{{ $title }}</h2>
         </div>
 		<div class="col-md-12">
-			<form method="post" class="needs-validation" id="client_form" novalidate>
+			<form method="post" class="needs-validation cform" id="client_form" novalidate>
 				<div class="row">
 					<input type="hidden" name="id" id="id" value="{{ $client->id ?? '0' }}"/>
 					<div class="col-md-4 mb-3">
@@ -127,6 +127,7 @@
 					</div>
 					<div class="col-md-12 text-end">
 						<button type="submit" class="btn btn-success" id="client_form_btn" >Save</button>
+						<!-- <button type="button" class="btn btn-danger delete {{ $client->id ?? 'd-none'}}" id="client_delete" >Delete</button> -->
 					</div>
 				</div>
 			</form>

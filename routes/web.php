@@ -37,16 +37,19 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
-    Route::group(['prefix' => 'client', 'as' => 'client.'], function(){
-        Route::controller(ClientController::class)->group(function () {
-            Route::get('', 'index')->name('index');
-            Route::get('/list', 'list')->name('list');
-            Route::get('add', 'add')->name('add');
-            Route::get('edit/{id?}', 'edit')->name('edit');
-            Route::post('client/save/{id?}', 'save')->name('saveclient');
-            Route::get('find/{id?}', 'find')->name('find');
-            Route::delete('/delete/{id?}', 'delete')->name('delete');
-        });
-    });
+    // Route::get('client', [ClientController::class, 'index'])->name('client.index');
+    // Route::get('client-list', [ClientController::class, 'list'])->name('client.list');
+    // Route::get('client-add', [ClientController::class, 'add'])->name('client.add');
+    // Route::get('client-edit/{id?}', [ClientController::class, 'edit'])->name('client.edit');
+    // Route::post('client-save/{id?}', [ClientController::class, 'save'])->name('client.save');
+    // Route::get('client-find/{id?}', [ClientController::class, 'find'])->name('client.find');
+    // // Route::delete('client-delete/{id?}', [ClientController::class, 'delete'])->name('client.delete');
+
+    // Route::delete('test/{id?}', [ClientController::class, 'delete'])->name('test.delete');
+    // Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
+
+    Route::resource('clients', ClientController::class)->names('clients');
+
+    
     
 });
