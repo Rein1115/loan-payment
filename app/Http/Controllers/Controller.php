@@ -53,15 +53,25 @@ class Controller extends BaseController
 
     public function menus(){
         $data = [];
-        $menu['usermodules'] = DB::select('SELECT um.* , mm.id as u_id,mm.description as u_desc, mm.icon as u_icon  FROM usermodules as um LEFT JOIN menu_modules as mm ON um.mmodules_id = mm.id WHERE um.user_id = '.Auth::user()->id.'');
-
-        if($menu['usermodules']){
+        $userId = Auth::user()->id;
+        $accountType = Auth::user()->account_type;
+        
+        $menu['usermodules'] = DB::select('SELECT um.*, mm.id as u_id,mm.access , mm.description as u_desc, mm.icon as u_icon 
+            FROM menu_modules as mm
+            LEFT JOIN usermodules as um ON um.mmodules_id = mm.id AND um.user_id = ?
+            WHERE ( mm.type = ? OR um.user_id IS NOT NULL) 
+        ', [$userId, $accountType]);
             for($um = 0; $um < count($menu['usermodules']); $um++){
+                // dd($menu['usermodules'][$um]);
                 // return $menu['usermodules'][$um];
                 $function = [];
-                $menu['userfunctions'] = DB::select('SELECT mf.* FROM userfunctions as uf LEFT JOIN menu_functions as mf ON uf.mfunctions_id = mf.id WHERE uf.mmodules_id = ? AND uf.user_id = ?', [$menu['usermodules'][$um]->u_id, Auth::user()->id]);
-
-
+                
+            $menu['userfunctions'] = DB::select('SELECT mf.* 
+                FROM menu_functions AS mf 
+                LEFT JOIN userfunctions AS uf ON mf.id = uf.mfunctions_id AND uf.user_id = ?
+                WHERE mf.mmodules_id = ? AND (mf.type = ? OR uf.user_id IS NOT NULL)
+            ', [$userId, $menu['usermodules'][$um]->u_id, $accountType]);
+                
                 for($uf = 0; $uf<count($menu['userfunctions']); $uf++){
                     $function[$uf] = [
                         "description" => $menu['userfunctions'][$uf]->description,
@@ -69,16 +79,16 @@ class Controller extends BaseController
                         "route" => $menu['userfunctions'][$uf]->route
                     ] ;
                 }
+
+                
                 $data [$um] = [
                     "description" => $menu['usermodules'][$um]->u_desc,
                     "icon" => $menu['usermodules'][$um]->u_icon,
                     "function" => $function
                 ];
             }
-
+            // dd($data);
             return $data;
-        }else{
-            return response()->json(['ts'=>'wala']);
-        }
+      
     }
 }

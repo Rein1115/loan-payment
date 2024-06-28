@@ -1,14 +1,6 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="index.html">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
       {{-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#client-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Client</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -59,23 +51,38 @@
       </li><!-- Collector Nav --> --}}
 
       
-      @foreach($data as $item)
-      <li class="nav-item">
-        <a class="nav-link" data-bs-target="#{{$item['description']}}-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>{{$item['description']}}</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="{{$item['description']}}-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            @foreach($item['function'] as $function)
-            <a href="{{$function['route']}}">
-              <i class="bi bi-circle"></i><span>{{$function['description']}}</span>
-            </a>
+      {{-- {{dd($data)}} --}}
 
-            @endforeach
-          </li>
-        </ul>
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="index.html">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
       </li>
-    @endforeach
+      @if($data >0)
+        @foreach($data as $item)
+        <li class="nav-item">
+          <a class="nav-link" data-bs-target="#{{$item['description']}}-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>{{$item['description']}}</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="{{$item['description']}}-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              @foreach($item['function'] as $function)
+              <a href="{{$function['route']}}">
+                <i class="bi bi-circle"></i><span>{{$function['description']}}</span>
+              </a>
+              @endforeach
+            </li>
+          </ul>
+        </li>
+      @endforeach
+      @else
+
+
+
+      @endif
+
+      
 
 
 

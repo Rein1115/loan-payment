@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Area\AreaController;
 use App\Http\Controllers\Collector\CollectorController;
-use App\Http\Controllers\menus\MenusController;
+use App\Http\Controllers\menumodule\MenumoduleController;
 use App\Http\Controllers\Client\ClientController;
 
 
@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('area/fetch/{id}', [Controller::class, 'getAreas'])->name('area.fetch');
         Route::resource('collector',CollectorController::class)->names('collector');
         // Route::resource('client',ClientController::class)->names('client');
-        Route::resource('menus',MenusController::class)->names('menus');
+        Route::resource('menumodule',MenumoduleController::class)->names('menumodule');
         // Route::post('client-save', [ClientController::Class,'save'])->name('client.save');
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -48,8 +48,5 @@ Route::middleware(['auth'])->group(function () {
     // Route::delete('test/{id?}', [ClientController::class, 'delete'])->name('test.delete');
     // Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
 
-    Route::resource('clients', ClientController::class)->names('clients');
-
-    
-    
+    Route::resource('clients', ClientController::class)->names('clients'); 
 });
