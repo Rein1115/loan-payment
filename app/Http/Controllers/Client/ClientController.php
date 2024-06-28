@@ -26,42 +26,56 @@ class ClientController extends Controller
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'middlename' => 'required',
-            'lastname' => 'required',
-            'dob' => 'required',
-            'gender' => 'required',
-            'civil_status' => 'required',
-            'edu_att' => 'required',
-            'religion' => 'required',
-            'present_add' => 'required',
-            'prov_add' => 'required',
-            'salary_income' => 'required',
-            'occupation' => 'required',
-            'nameOfBusiness' => 'nullable',
-            'addOfBusiness' => 'nullable',
-            'mo_income' => 'nullable',
-            'contact_no' => 'nullable',
-            'otherLoan' => 'nullable',
-            'sp_name' => 'nullable',
-            'sp_add' => 'nullable',
-            'sp_occupation' => 'nullable',
-            'sp_salary' => 'nullable',
-            'no_dependents' => 'nullable',
-            'sp_contact' => 'nullable',
-            'sp_children' => 'nullable',
-            'client_pic' => 'nullable',
-            'client_add_sketch' => 'nullable',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => false, 'error' => $validator->errors()]);
-        }
+		// \Log::info('Incoming request data:', $request->all());
+		// \Log::info('Request data types:', array_map('gettype', $request->all()));
 
-        $client = Client::create($request->all());
+		$validator = Validator::make($request->all(), [
+			'firstname' => 'required',
+			'middlename' => 'required',
+			'lastname' => 'required',
+			'dob' => 'required',
+			'gender' => 'required',
+			'civil_status' => 'required',
+			'edu_att' => 'required',
+			'religion' => 'required',
+			'present_add' => 'required',
+			'prov_add' => 'required',
+			'salary_income' => 'required',
+			'occupation' => 'required',
+			'nameOfBusiness' => 'nullable',
+			'addOfBusiness' => 'nullable',
+			'mo_income' => 'nullable',
+			'contact_no' => 'nullable',
+			'otherLoan' => 'nullable',
+			'sp_name' => 'nullable',
+			'sp_add' => 'nullable',
+			'sp_occupation' => 'nullable',
+			'sp_salary' => 'nullable',
+			'no_dependents' => 'nullable',
+			'sp_contact' => 'nullable',
+			'sp_children' => 'nullable',
+			'client_pic' => 'nullable',
+			'client_add_sketch' => 'nullable',
+		]);
 
-        return response()->json(['status' => true, 'message' => 'Client created successfully!', 'data' => $client]);
+		if ($validator->fails()) {
+			return response()->json(['status' => false, 'error' => $validator->errors()]);
+		}
+
+		$validatedData = $validator->validated();
+
+		// Ensure no array values are passed
+		foreach ($validatedData as $key => $value) {
+			if (is_array($value)) {
+				$validatedData[$key] = implode(',', $value); // Convert array to string
+			}
+		}
+
+		$client = Client::create($validatedData);
+
+		return response()->json(['status' => true, 'message' => 'Client created successfully!', 'data' => $client]);
+
     }
 
     // Display the specified resource.

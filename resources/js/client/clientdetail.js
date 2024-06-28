@@ -1,19 +1,7 @@
-// document.getElementById('client_form_btn').addEventListener('click', function(event) {
-//     event.preventDefault(); // Prevent the default form submission
-//     const form = document.getElementById('client_form');
-//     const formData = new FormData(form);
-//     const url = form.action;
-//     axios.post(url, formData)
-//         .then(response => {
-//             console.log('Form submitted successfully:', response);
-//             // Handle success - you can redirect or show a success message here
-//         })
-//         .catch(error => {
-//             console.error('Error submitting form:', error);
-//             // Handle error - show error message to the user
-//         });
-// });
 
+function base_url(path) {
+	return 'http://127.0.0.1:8000' + path;
+}
 $(document).ready(function() {
     // $('#client_form').on('submit', function(e){
     //     let idval = $('#id').val();
@@ -67,6 +55,11 @@ $(document).ready(function() {
         e.preventDefault(); // Prevent the default form submission
         var formData = new FormData(this);
     
+        // Log the FormData content for debugging
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]); 
+        }
+    
         Swal.fire({
             title: "Are you sure?",
             text: idval && idval !== '0' ? "Are you sure you want to update the client?" : "Are you sure you want to save new client?",
@@ -79,24 +72,43 @@ $(document).ready(function() {
             if (result.isConfirmed) {
                 let request;
     
+                // Convert FormData to JSON
+                let formObject = {};
+                formData.forEach((value, key) => {
+                    formObject[key] = value;
+                });
+    
                 if (idval && idval !== '0') {
                     // Update existing client
-                    request = axios.put('clients/' + idval, formData);
+                    request = axios.put(`http://127.0.0.1:8000/clients/${idval}`, formObject, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    console.log(formObject);
                 } else {
                     // Create new client
-                    request = axios.post('clients', formData);
+                    const jsonString = JSON.stringify(formObject);
+                    request = axios.post('http://127.0.0.1:8000/clients', jsonString, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+    
+                    console.log(jsonString);
                 }
     
                 request.then(response => {
                     var resp = response.data;
-                    console.log(resp);
+                    console.log(response.data);
                     if (resp.status === true) {
                         Swal.fire({
                             title: "Success",
                             text: "Client " + (idval && idval !== '0' ? "updated" : "added") + " successfully",
                             icon: "success",
                         }).then(() => {
-                            window.location.href = 'http://127.0.0.1:8000/client';
+                            window.location.href = 'http://127.0.0.1:8000/clients';
                         });
                     } else {
                         Swal.fire({
@@ -116,6 +128,9 @@ $(document).ready(function() {
             }
         });
     });
+
+    
+    
     
 
     // $('#client_delete').click(function(){

@@ -118,6 +118,8 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qs/dist/qs.js"></script>
+
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
