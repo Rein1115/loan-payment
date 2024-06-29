@@ -39,6 +39,8 @@
                 <div class="col-md-6">
                     <!-- Select2 dropdown -->
                     <select id="type" class="form-control select2" name="type" required>
+                        <option value="teller">Teller</option>
+                        <option value="cashier">Cashier</option>
                     </select>
                 </div>
             </div>  

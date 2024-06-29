@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usermodules', function (Blueprint $table) {
+        Schema::create('menumodules', function (Blueprint $table) {
             $table->id();
             $table->string('description');
             $table->string('icon');
-            $table->string('description');
-            $table->string('description');
-            $table->string('description');
+            $table->string('route');
+            $table->integer('sort');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usermodules');
+        Schema::dropIfExists('menumodules');
     }
 };

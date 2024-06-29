@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\menus\MenusController;
+use App\Http\Controllers\menufunction\FunctionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use App\Http\Controllers\menus\MenusController;
 */
 
 Route::resource('test',MenusController::class)->names('test');
+
+Route::resource('menufunction',FunctionController::class)->names('menufunction');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

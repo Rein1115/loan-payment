@@ -147,6 +147,6 @@ class CollectorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+     
     }
 }

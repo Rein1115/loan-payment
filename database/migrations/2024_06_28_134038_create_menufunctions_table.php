@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_functions', function (Blueprint $table) {
+        Schema::create('menufunctions', function (Blueprint $table) {
             $table->id();
             $table->string('description');
             $table->string('icon');
@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('mmodules_id');
             $table->integer('sort');
             $table->string('type');
-            $table->string('access');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_functions');
+        Schema::dropIfExists('menufunctions');
     }
 };

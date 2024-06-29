@@ -56,8 +56,8 @@ class Controller extends BaseController
         $userId = Auth::user()->id;
         $accountType = Auth::user()->account_type;
         
-        $menu['usermodules'] = DB::select('SELECT um.*, mm.id as u_id,mm.access , mm.description as u_desc, mm.icon as u_icon 
-            FROM menu_modules as mm
+        $menu['usermodules'] = DB::select('SELECT um.*, mm.id as u_id , mm.description as u_desc, mm.icon as u_icon 
+            FROM menumodules as mm
             LEFT JOIN usermodules as um ON um.mmodules_id = mm.id AND um.user_id = ?
             WHERE ( mm.type = ? OR um.user_id IS NOT NULL) 
         ', [$userId, $accountType]);
@@ -67,7 +67,7 @@ class Controller extends BaseController
                 $function = [];
                 
             $menu['userfunctions'] = DB::select('SELECT mf.* 
-                FROM menu_functions AS mf 
+                FROM menufunctions AS mf 
                 LEFT JOIN userfunctions AS uf ON mf.id = uf.mfunctions_id AND uf.user_id = ?
                 WHERE mf.mmodules_id = ? AND (mf.type = ? OR uf.user_id IS NOT NULL)
             ', [$userId, $menu['usermodules'][$um]->u_id, $accountType]);
@@ -91,4 +91,13 @@ class Controller extends BaseController
             return $data;
       
     }
+
+    // public function Userauth(){
+    //     $userId = Auth::user()->id;
+    //     $userType = Auth::user()->type;
+
+    //     $data = DB::select('SELECT * FROM users AS u INNER JOIN usermodules AS um ON um.user_id = u.id LEFT JOIN userfunctions AS uf ON uf.user_id = u.id WHERE um.user_id = ? OR u.account_type ="Admin" ' , [ $userId]);
+        
+    //     return $data;
+    // }
 }

@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="pagetitle">
-    <h1>Menu Module(s)</h1>
+    <h1>Menu Function(s)</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-        <li class="breadcrumb-item">Menu Module</li>
+        <li class="breadcrumb-item">Menu Function</li>
       </ol>
     </nav>
 </div><!-- End Page Title -->
@@ -38,10 +38,10 @@
         </div>
     </div>
 </section>
-@include('tools.menumodule.menumodulemodal')
+@include('tools.menufunction.menufunction')
 @endsection
 
 @section('script')
 @vite('resources/js/tools/import.js')
-@vite('resources/js/menumodule/menumodule-list.js')
+@vite('resources/js/menufunction/menufunction-list.js')
 @endsection
