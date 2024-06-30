@@ -21,12 +21,9 @@
                     <table id="mytable" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th><b>Description</b></th>
-                                <th >Icon</th>
-                                <th>Route</th>
-                                <th>Sort</th>
-                                <th>Type</th>
-                                <th>Action</th>
+                                <th><b>TransNo</b></th>
+                                <th id="menumodules" >Menu Modules</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody> 

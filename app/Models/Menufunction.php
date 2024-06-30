@@ -9,6 +9,7 @@ class Menufunction extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'transNo',
         'description',
         'icon',
         'route',

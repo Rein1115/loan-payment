@@ -47,6 +47,7 @@ $(document).ready(function(){
     });
 
         $('#mytable').on('click','.btn-details',function(){
+            
             var id = $(this).data('details');
             $('#modalsaveupdate .btn-saveupdate').removeAttr('id','save').text('text');
             $('#modalsaveupdate').modal('show');

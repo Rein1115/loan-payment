@@ -18,16 +18,14 @@ $(document).ready(function(){
                 });
             },
             columns: [
-                { data: 'description' },  
-                { data: 'icon' },
-                { data: 'route' },
-                { data: 'sort' },
-                { data: 'type' },
+                { data: 'transNo' },  
+                { data: 'description' },
+   
                 {
                     data: null,
                     render: function (data, type, row) {
-                    return '<button id="details"    class="btn btn-primary btn-details" data-area="'+data.id+'" data-details = "'+data.id+'""><i class="bi bi-eye"></i></button>' +
-                        '<button class="btn btn-danger btn-delete" data-delete = "'+data.id+'" ><i class="bi bi-trash"></i></button>';
+                    return '<button id="details"    class="btn btn-primary btn-details" data-area="'+data.transNo+'" data-details = "'+data.transNo+'""><i class="bi bi-eye"></i></button>' +
+                        '<button class="btn btn-danger btn-delete" data-delete = "'+data.transNo+'" ><i class="bi bi-trash"></i></button>';
     
                     }
                 }
@@ -102,9 +100,6 @@ $(document).ready(function(){
                 })
             });    
 
-
-           
-
             $('#plus').on('click', function () {
                 counter++;
                 $('#appendetails').append(`
@@ -125,6 +120,13 @@ $(document).ready(function(){
             });
 
 
+            // diri ko nahunong
+            $('#mytable').on('click','.btn-details',function(){
+                var id = $(this).data('details');
+
+
+               
+            });    
     });
 
 
