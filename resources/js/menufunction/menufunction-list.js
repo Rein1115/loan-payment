@@ -1,6 +1,6 @@
 let counter = 0;
 $(document).ready(function(){
-    
+    var tableModal = $('#appendetails');
     // Datatable
         var table;
             table = $('#mytable').DataTable({
@@ -36,6 +36,7 @@ $(document).ready(function(){
                 {
                     text: 'Add Menumodule',            
                     action: function (e, dt, node, config) {
+                        tableModal.empty();
                         $('#modalsaveupdate').modal('show');
                         $('#modalsaveupdate input').val('');  
                       
@@ -52,16 +53,13 @@ $(document).ready(function(){
                 $('#modalsaveupdate').modal('show');
                 $('#modalsaveupdate .btn-saveupdate').attr('id','update').attr('data-id',id).text('Update');
                 $('#idval').val(id);
-    
-            axios.get('menumodule/'+id )
+
+            axios.get('menufunction/'+id )
             .then(response=>{
+                console.log(response);
                 var data = response.data.response;
-                // console.log(data);
-                $('#description').val(data[0].description);
-                $('#icon').val(data[0].icon);
-                $('#route').val(data[0].route);
-                $('#sort').val(data[0].sort);
-                $('#type').val(data[0].type);
+                console.log(data);
+                $('#transNo').val(data.id);
             })
             });
     
@@ -99,11 +97,11 @@ $(document).ready(function(){
                     }
                 })
             });    
-
+         
             $('#plus').on('click', function () {
                 counter++;
-                $('#appendetails').append(`
-                    <tr>
+                tableModal.append(`
+                    <tr class="removeTable${counter}">
                         <th scope="row"> <input id="description${counter}" type="text" class="form-control" name="description" value="" required autocomplete="description"></th>
                         <td> <input id="icon${counter}" type="text" class="form-control" name="icon" value="" required autocomplete="icon"></td>
                         <td> <input id="route${counter}" type="text" class="form-control" name="route" value="" required autocomplete="route"></td>
@@ -115,45 +113,82 @@ $(document).ready(function(){
                                 <option value="type3">Type 3</option>
                             </select>
                         </td>
+                        <td> <button class="btn btn-danger deleteTable" data-index="${counter}"><i class="bi bi-trash"></i></button></td>
                     </tr>
                 `);
             });
 
-
             // diri ko nahunong
             $('#mytable').on('click','.btn-details',function(){
                 var id = $(this).data('details');
-
-
-               
+                tableModal.empty();
+                axios.get('menufunction/' + id)
+                .then(resp => {
+                    var data = resp.data.response;
+                    var header = data.text;
+                    var ids = data.id;
+                    $('#mmodules_id').val(ids);
+                    $('#idvalue').val(header);
+                    
+                    data.data.forEach(item => {
+                        counter++;
+                        tableModal.append(`
+                            <tr class="removeTable${counter}">
+                                <th scope="row"> <input id="description${counter}" type="text" class="form-control" name="description" value="${item.description}" required autocomplete="description"></th>
+                                <td> <input id="icon${counter}" type="text" class="form-control" name="icon" value="${item.icon
+                                }" required autocomplete="icon"></td>
+                                <td> <input id="route${counter}" type="text" class="form-control" name="route" value="${item.route}" required autocomplete="route"></td>
+                                <td> <input id="sort${counter}" type="text" class="form-control" name="sort" value="${item.sort}" required autocomplete="sort"></td>
+                                <td> <select id="type${counter}" name="type" class="form-control" required>
+                                        <option value="" disabled selected>Select type</option>
+                                        <option value="type1">Type 1</option>
+                                        <option value="type2">Type 2</option>
+                                        <option value="type3">Type 3</option>
+                                    </select>
+                                </td>
+                                <td> <button class="btn btn-danger deleteTable" data-index="${counter}"><i class="bi bi-trash"></i></button></td>
+                            </tr>
+                        `);
+                    })
+                })
             });    
+            tableModal.on('click', '.deleteTable',function(){
+                var id = $(this).data('index');
+                tableModal.find('.removeTable' + id).remove();
+            });
     });
 
 
-    function appendvalue(){
+
+    function appendvalue() {
         let dynamic = [];
         for (let i = 1; i <= counter; i++) {
             let data = {
                 description: $(`#description${i}`).val(),
                 icon: $(`#icon${i}`).val(),
                 route: $(`#route${i}`).val(),
-                mmodules_id: $('#mmodules_id').val(),
                 sort: $(`#sort${i}`).val(),
                 type: $(`#type${i}`).val(),
             };
             dynamic.push(data);
         }
-        return dynamic
+        // Filter out objects with all properties undefined
+        dynamic = dynamic.filter(item => 
+            item.description !== undefined || 
+            item.icon !== undefined || 
+            item.route !== undefined || 
+            item.sort !== undefined || 
+            item.type !== undefined
+        );
+    
+        return dynamic;
     }
-
     
     $(document).on('click','#save, #update', function() {
         if (this.id === 'save') {
            var data = appendvalue();
 
            console.log(data);
-
-    
             Swal.fire({
                 title: "Are you sure?",
                 text: "Are you sure you want to save new function?",
@@ -165,7 +200,7 @@ $(document).ready(function(){
             }).then((result) => {
                 if (result.isConfirmed) {
                     var datas = appendvalue();
-                    axios.post('menufunction/',{data : {function : datas }})
+                    axios.post('menufunction/',{  header : $('#mmodules_id').val(),data : {function : datas }})
                     .then(response=>{
                         var resp = response.data;            
                         if (resp.success === true) {
@@ -204,26 +239,59 @@ $(document).ready(function(){
                 }
             });
         } else if (this.id === 'update') {
-            let id =   $('#idval').val();
-            
-            var data ={
-                description: $('#description').val(),
-                icon : $('#icon').val(),
-                route:  $('#route').val(),
-                sort : $('#sort').val(),
-                type : $('#type').val()
-            }
-            axios.put('menumodule/'+id,data)
-            .then(response=>{
-                var resp = response.data;
-                if(resp.success === true){
-                    console.log(resp.response);
+            let id =  $('#transNo').val();
+            var head = $('#mmodules_id').val();
+            var data = appendvalue();
+
+           console.log(data);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Are you sure you want to save new function?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, save it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var datas = appendvalue();
+                    axios.put('menufunction/' + id, {  header :head ,data : {function : datas }})
+                    .then(response=>{
+                        var resp = response.data;            
+                        if (resp.success === true) {
+                                console.log(resp.response);
+                                Swal.fire({
+                                    title: "Success",
+                                    text: resp.response,
+                                    icon: "success",
+                                }).then(() => {
+                                  
+                                    $('#modalsaveupdate').modal('hide');
+                                    table.ajax.reload();
+                                });
+                         }
+                        else{
+                            let errorMessage = '';
+                            for (let key in resp.response) {
+                                if (resp.response.hasOwnProperty(key)) {
+                                    errorMessage += `${resp.response[key]}\n`;
+                                }
+                            }
+                            console.log(resp);
+                            Swal.fire({
+                                title: "Error",
+                                text:   errorMessage ? errorMessage.trim() : resp.response ,
+                                icon: "error",
+                            }).then(() => {
+                                // location.reload();
+                                $('#modalsaveupdate').modal('hide');
+                                table.ajax.reload();
+                            });
+                        }
+                    }).catch((error) => {
+                        console.error("There was an error making the request:", error);
+                    });
                 }
-                else{
-                    console.log(resp.response);
-                }
-            }).catch((error) => {
-                console.error("There was an error making the request:", error);
             });
         }
         else{

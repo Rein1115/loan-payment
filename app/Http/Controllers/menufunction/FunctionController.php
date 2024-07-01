@@ -40,7 +40,6 @@ class FunctionController extends Controller
      */
     public function store(Request $request)
     {   
-      
         $data = $request->data['function'];
 
         foreach ($data as $item) {
@@ -48,7 +47,7 @@ class FunctionController extends Controller
                 'description' => ['required', 'string'],
                 'icon' => ['required', 'string'],
                 'route' => ['required', 'string'],
-                'mmodules_id' => ['required', 'integer'],
+                
                 'sort' => ['required', 'integer'],
                 'type' => ['required', 'string'],
             ]);
@@ -57,24 +56,29 @@ class FunctionController extends Controller
                 return response()->json(['success' => false, 'response' => $validator->errors()]);
             }
         }
+    
+        
+        $lastTransNo = Menufunction::max('transNo') + 1;
 
-        $lastTransNo = Menufunction::max('transNo')+1;
+        $headers = $request->header;
 
-        foreach ($data as $item) {
-            Menufunction::create([
-                'transNo' =>  empty($lastTransNo) ? 1 : $lastTransNo,
-                'description' => $item['description'],
-                'icon' => $item['icon'],
-                'route' => $item['route'],
-                "mmodules_id" => $item['mmodules_id'],
-                "sort" => $item['sort'],
-                'type' => $item['type'],
-            ]);
+        if($headers){
+            foreach ($data as $item) {
+                Menufunction::create([
+                    'transNo' =>  empty($lastTransNo) ? 1 : $lastTransNo,
+                    'description' => $item['description'],
+                    'icon' => $item['icon'],
+                    'route' => $item['route'],
+                    "mmodules_id" => $headers,
+                    "sort" => $item['sort'],
+                    'type' => $item['type'],
+                ]);
+            }
+            return response()->json(['success' => true, 'response' => 'Menu functions inserted successfully']);
         }
-        
-        return response()->json(['success' => true, 'response' => 'Menu functions inserted successfully']);
-        
-
+        else{
+            return response()->json(['success' => false, 'response' => 'Module Name is required.']);
+        }
     }
 
     /**
@@ -84,8 +88,22 @@ class FunctionController extends Controller
     {
         //
         try {
-            $data = DB::select('SELECT mf.* FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id WHERE mf.transNo = ?', [$id]);
-            return response()->json(['success' => true, 'response' => $data], 200);
+            $data = DB::select('SELECT mm.id AS mmid , mm.description AS mdesc , mf.* FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id WHERE mf.transNo = ?', [$id]);
+
+
+
+            $datas = [];
+            for($i = 0 ; $i < count($data); $i++){
+                $lines = DB::select('SELECT mm.id  as mmid,mm.description AS mdesc, mf.* FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id WHERE mf.transNo = ?', [$data[$i]->transNo]);
+
+                $datas= [
+                    "transNo" => $data[$i]->transNo,
+                    "text" => $data[$i]->mdesc,
+                    "id" => $data[$i]->mmid,
+                    "data" => $lines
+                ];
+            }
+            return response()->json(['success' => true, 'response' => $datas], 200);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'response' => $e->getMessage()], 401);
         }
@@ -106,11 +124,8 @@ class FunctionController extends Controller
     public function update(Request $request, string $id)
     {
         //
-
-
-        
-
         $data = $request->data['function'];
+        $headers = $request->header;
 
         foreach ($data as $item) {
             $validator = Validator::make($item, [
@@ -125,22 +140,44 @@ class FunctionController extends Controller
                 return response()->json(['success' => false, 'response' => $validator->errors()]);
             }
         }
-        $transdelete = Menufunction::find($id);
-        $transdelete->delete();
 
-        $lastTransNo = Menufunction::max('transNo')+1;
+       
 
-        foreach ($data as $item) {
-          
-            Menufunction::create([
-                'transNo' =>  empty($lastTransNo) ? 1 : $lastTransNo,
-                'description' => $item['description'],
-                'icon' => $item['icon'],
-                'route' => $item['route'],
-                "sort" => $item['sort'],
-                'type' => $item['type'],
-         ]);
+        $lastTransNo = Menufunction::max('transNo') + 1;
+        if (!$headers) {
+            return response()->json(['success' => false, 'response' => 'Module Name is required.']);
         }
+            // Delete existing records with the specified transNo
+            DB::delete('DELETE FROM menufunctions WHERE transNo = ?', [$id]);
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $lastTransNo = Menufunction::max('transNo') + 1;
+    
+            // Insert new records
+            foreach ($data as $item) {
+                Menufunction::create([
+                    'transNo' => $lastTransNo,
+                    'description' => $item['description'],
+                    'icon' => $item['icon'],
+                    'route' => $item['route'],
+                    "mmodules_id" => $headers,
+                    "sort" => $item['sort'],
+                    'type' => $item['type'],
+                ]);
+            }
+    
+            // Commit the transaction
+            DB::commit();
+            return response()->json(['success' => true, 'response' => 'Menu functions inserted successfully']);
+    
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of error
+            DB::rollBack();
+            return response()->json(['success' => false, 'response' => 'An error occurred: ' . $e->getMessage()]);
+        }
+
     }
 
     /**
