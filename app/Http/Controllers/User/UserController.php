@@ -14,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('User.user-list');
+        $data = $this->menus();
+
+        return view('User.user-list', compact('data'));
     }
 
     /**

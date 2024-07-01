@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Area;
-namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
@@ -19,13 +18,16 @@ class AreaController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Area::all();
+            $area = Area::all();
 
-            return response()->json(['success'=>true,'response' => $data]);
+            return response()->json(['success'=>true,'response' => $area]);
         }
 
+        $data = $this->menus();
 
-        return view('area.area-list');
+
+
+        return view('area.area-list', compact('data'));
     }
 
     /**
