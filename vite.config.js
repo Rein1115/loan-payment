@@ -18,7 +18,12 @@ export default defineConfig({
                 'resources/js/tools/import.js',
 
                 'resources/js/client/clientdetails.js',
-                'resources/js/client/clientdetail.js'
+                'resources/js/client/clientdetail.js',
+
+                'resources/js/loanapplication/loanapplicationdetail.js',
+                'resources/js/loanapplication/loanapplicationdetails.js'
+
+
             ],
             refresh: true,
         }),

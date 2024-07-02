@@ -8,6 +8,9 @@ use App\Http\Controllers\Collector\CollectorController;
 use App\Http\Controllers\menumodule\MenumoduleController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\menufunction\FunctionController;
+use App\Http\Controllers\LoanApplication\LoanApplicationController;
+
+
 
 
 /*
@@ -34,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
         // Route::resource('client',ClientController::class)->names('client');
         Route::resource('menumodule',MenumoduleController::class)->names('menumodule');
         Route::resource('menufunction',FunctionController::class)->names('menufunction');
+        Route::resource('loan-applications', LoanApplicationController::class)->names('loan-applications');
+
         // Route::post('client-save', [ClientController::Class,'save'])->name('client.save');
 
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
