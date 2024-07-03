@@ -41,7 +41,7 @@ function show_client(){
 						<i class="bi bi-eye-fill"></i>
                         </a>
 						<button class="btn btn-danger btn-sm font-base mt-1" id="client_delete" data-id="${row.id}">
-						<i class="bi bi-eye-fill"></i>
+                        <i class="bi bi-person-x"></i>                        
                         </button>
                     `;
                 }

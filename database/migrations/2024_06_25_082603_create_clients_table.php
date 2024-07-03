@@ -37,8 +37,8 @@ return new class extends Migration
                 $table->integer('no_dependents')->nullable();
                 $table->integer('sp_contact')->nullable();
                 $table->string('sp_children')->nullable();
-                $table->string('client_pic')->nullable();
-                $table->string('client_add_sketch')->nullable();
+                $table->longText('client_pic')->nullable();
+                $table->longText('client_add_sketch')->nullable();
                 $table->timestamps();
             });
     }
