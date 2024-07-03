@@ -34,7 +34,7 @@ $(document).ready(function(){
             buttons: [
                 'copy', 'excel', 'pdf',
                 {
-                    text: 'Add Menumodule',            
+                    text: 'Add Function',            
                     action: function (e, dt, node, config) {
                         tableModal.empty();
                         $('#modalsaveupdate').modal('show');
@@ -42,6 +42,7 @@ $(document).ready(function(){
                       
                         $('#modalsaveupdate select').val(null).trigger('change');
                         $('#modalsaveupdate .btn-saveupdate').attr('id','save').removeAttr('data-id').text('Save');
+                        $('#mmodules_id').removeAttr('readonly');
                     }
                 }
             ]
@@ -49,6 +50,7 @@ $(document).ready(function(){
     
             $('#mytable').on('click','.btn-details',function(){
                 var id = $(this).data('details');
+                $('#mmodules_id').attr('readonly', true);
                 $('#modalsaveupdate .btn-saveupdate').removeAttr('id','save').text('text');
                 $('#modalsaveupdate').modal('show');
                 $('#modalsaveupdate .btn-saveupdate').attr('id','update').attr('data-id',id).text('Update');
@@ -129,6 +131,7 @@ $(document).ready(function(){
                     var ids = data.id;
                     $('#mmodules_id').val(ids);
                     $('#idvalue').val(header);
+                    
                     
                     data.data.forEach(item => {
                         counter++;

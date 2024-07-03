@@ -17,13 +17,27 @@ class FunctionController extends Controller
     public function index(Request $request)
     {
  
-        $data = $this->menus();
+        // $data = $this->menus();
+        // $data = $this->Userauth();
+        // return  $data;
     
-        if($request->ajax()){
-            $data = DB::select('SELECT mm.description,mf.transNo FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id GROUP BY   mf.transNo, mm.description');
-            return response()->json(['success' => true,'response' => $data]);
-        }
-            return view('menufunction.menufunction-list',compact('data'));
+        // if($request->ajax()){
+        //     $data = DB::select('SELECT mm.description,mf.transNo FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id GROUP BY   mf.transNo, mm.description');
+        //     return response()->json(['success' => true,'response' => $data]);
+        // }
+        //     return view('menufunction.menufunction-list',compact('data'));
+
+        $descriptionmenu = 'System';
+        $descriptionfunctionId = 4;
+        $type = 'admin';
+        
+        $query = DB::select('SELECT * 
+            FROM menumodules AS mm 
+            INNER JOIN menufunctions AS mf ON mm.id = mf.mmodules_id 
+            WHERE mm.description = ? AND mf.mmodules_id = ? AND mm.type = ?',
+            [$descriptionmenu, $descriptionfunctionId, $type]);
+    
+        return $query;
     }
 
     /**
@@ -56,7 +70,6 @@ class FunctionController extends Controller
                 return response()->json(['success' => false, 'response' => $validator->errors()]);
             }
         }
-    
         
         $lastTransNo = Menufunction::max('transNo') + 1;
 
@@ -89,9 +102,6 @@ class FunctionController extends Controller
         //
         try {
             $data = DB::select('SELECT mm.id AS mmid , mm.description AS mdesc , mf.* FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id WHERE mf.transNo = ?', [$id]);
-
-
-
             $datas = [];
             for($i = 0 ; $i < count($data); $i++){
                 $lines = DB::select('SELECT mm.id  as mmid,mm.description AS mdesc, mf.* FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id WHERE mf.transNo = ?', [$data[$i]->transNo]);
@@ -116,6 +126,9 @@ class FunctionController extends Controller
     public function edit(string $id)
     {
         //
+
+
+
     }
 
     /**
@@ -123,7 +136,6 @@ class FunctionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $data = $request->data['function'];
         $headers = $request->header;
 
@@ -177,7 +189,6 @@ class FunctionController extends Controller
             DB::rollBack();
             return response()->json(['success' => false, 'response' => 'An error occurred: ' . $e->getMessage()]);
         }
-
     }
 
     /**

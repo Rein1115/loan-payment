@@ -93,11 +93,52 @@ class Controller extends BaseController
     }
 
     // public function Userauth(){
-    //     $userId = Auth::user()->id;
-    //     $userType = Auth::user()->type;
+    //     // $userId = Auth::user()->id;
+    //     // $userType = Auth::user()->type;
+    //          $userId = 0;
+    //     $userType = 'cashier';
 
-    //     $data = DB::select('SELECT * FROM users AS u INNER JOIN usermodules AS um ON um.user_id = u.id LEFT JOIN userfunctions AS uf ON uf.user_id = u.id WHERE um.user_id = ? OR u.account_type ="Admin" ' , [ $userId]);
-        
-    //     return $data;
+
+    //     $acc['users'] = DB::select('SELECT * FROM users');
+
+    //     $response = [];
+    //     $menumod= [];
+    //     $userfunction = [];
+    //     for($u = 0; $u<count($acc['users']); $u++){
+
+    //         $acc['menumodules'] = DB::select('SELECT * FROM menumodules WHERE type = ?' , [$acc['users'][$u]->account_type]);
+
+    //         for($mm = 0 ; $mm < count($acc['menumodules']); $mm++){
+    //             $acc['menufunctions'] = DB::select('SELECT * FROM menufunctions WHERE mmodules_id =? ',[$acc['menumodules'][$mm]->id]); 
+
+    //             $acc['usermodule'] = DB::select('SELECT * FROM usermodules WHERE user_id = ? AND mmodules_id = ? ', [$userId,$acc['users'][$u]->id]);
+
+    //             for($um = 0; $um < count($acc['usermodule']); $um++){
+    //                 $acc['userfunction'] = DB::select('SELECT * FROM userfunctions WHERE mmodules_id = ? AND type = ? ' , [$acc['usermodule'][$um]->id,$userId]);
+
+    //                 $userfunction[$um] = [
+    //                     "userfunction" => $acc['userfunction'][$um]->id,
+    //                     "usermodules" => $acc['usermodule'][$um]->id
+    //                 ];
+    //             }
+
+    //             $menumod[$mm] = [
+    //                 "menufunctions" => $acc['menufunctions'][$mm]->id,
+    //                 "userfunction" => $userfunction
+                    
+    //             ];
+
+    //         }
+
+
+    //         $response[$u] = [
+    //             "user" => $acc['users'][$u]->id,
+    //             "menumodules" => $menumod
+    //         ];
+
+    //     }
+
+
+    //     return $response;
     // }
 }
