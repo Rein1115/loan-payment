@@ -16,7 +16,7 @@
 					<div class="col-md-3 mb-2">
 						<label class="mb-1">Loan Type</label>
 						<select name="loanType" id="loantype" class="form-control text-center" required>
-						<option value="{{$loan->loanType}}" disabled selected> Select Loan Type</option>
+						<option value="{{$loan->loanType}}" disabled selected>Select Loan Type</option>
 						<option value="microloan">Micro-loan</option>
 						</select>
 					</div>
@@ -26,7 +26,7 @@
 					</div>
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Loan Amount</label>
-						<input type="number" name="loanAmount" id="loanamount" class="form-control text-center" required value="{{ $loan->firstname ?? '' }}" placeholder="Loan Amount"/>
+						<input type="number" name="loanAmount" id="loanamount" class="form-control text-center" required value="{{ $loan->loanAmount ?? '' }}" placeholder="Loan Amount"/>
 					</div>
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Period Days</label>
@@ -56,23 +56,23 @@
 
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Total Amount</label>
-						<input type="number" name="total_amount" id="total_amount" class="form-control text-center" required value="{{ $client->firstname ?? '' }}" placeholder="Total Amount"/>
+						<input type="number" name="total_amount" id="total_amount" class="form-control text-center" required value="{{ $loan->total_amount ?? '' }}" placeholder="Total Amount"/>
 					</div>
 					<div class="col-md-2 mb-2">
 						<label class="mb-1">Daily Dues</label>
-						<input type="number" name="daily_dues" id="daily_dues" class="form-control text-center" required value="{{ $client->firstname ?? '' }}" placeholder="Daily Dues" readonly/>
+						<input type="number" name="daily_dues" id="daily_dues" class="form-control text-center" required value="{{ $loan->daily_dues ?? '' }}" placeholder="Daily Dues" readonly/>
 					</div>
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Co-Maker</label>
-						<input type="text" name="co_maker" id="co_maker" class="form-control text-center" required value="" placeholder="Co-Maker"/>
+						<input type="text" name="co_maker" id="co_maker" class="form-control text-center" required value="{{$loan->co_maker}}" placeholder="Co-Maker"/>
 					</div>
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Checked By</label>
-						<input type="text" name="checkedBy" id="checkedBy" class="form-control text-center" required value="" placeholder="Checked By"/>
+						<input type="text" name="checkedBy" id="checkedBy" class="form-control text-center" required value="{{$loan->checkedBy}}" placeholder="Checked By"/>
 					</div>
 					<div class="col-md-4 mb-3">
 						<label class="mb-1">Approved By</label>
-						<input type="text" name="approvedBy" id="approvedBy" class="form-control text-center" required value="" placeholder="Approved By"/>
+						<input type="text" name="approvedBy" id="approvedBy" class="form-control text-center" required value="{{$loan->approvedBy}}" placeholder="Approved By"/>
 					</div>
 				</div>
 				<div class="d-flex justify-content-end">
