@@ -12,6 +12,7 @@ class ClientController extends Controller
 {
 	public function index()
     {
+	
         $data = $this->menus();
         return view('client.index', compact('data'));
     }
@@ -52,8 +53,8 @@ class ClientController extends Controller
         'no_dependents' => 'nullable',
         'sp_contact' => 'nullable',
         'sp_children' => 'nullable',
-        'client_pic' => 'nullable',
-        'client_add_sketch' => 'nullable',
+        'client_pic' => 'required',
+        'client_add_sketch' => 'required',
     ]);
 
     if ($validator->fails()) {
@@ -172,8 +173,8 @@ class ClientController extends Controller
             'no_dependents' => 'nullable',
             'sp_contact' => 'nullable',
             'sp_children' => 'nullable',
-            'client_pic' => 'nullable|max:5120',
-            'client_add_sketch' => 'nullable|max:5120',
+            'client_pic' => 'required',
+            'client_add_sketch' => 'required',
         ]);
     
         if ($validator->fails()) {

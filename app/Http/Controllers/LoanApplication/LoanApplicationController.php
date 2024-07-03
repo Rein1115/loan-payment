@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LoanApplication;
 use App\Models\Client;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use DB;
 
@@ -76,14 +77,34 @@ class LoanApplicationController extends Controller
         return response()->json(['status' => true, 'data' => $data]);
     } else {
       $title = "Loan Application Details";
-      $data = db::select(
-        "SELECT *, loan_applications.id as loanid
-         FROM loan_applications
-         INNER JOIN clients ON loan_applications.clientid = clients.id
-         WHERE loan_applications.id =?", [$id]
-    );
-        //  response()->json(['status' => true, 'data' => $data]);
-         return view('loanapplication.viewdetails', compact('data', 'title'));
+$client = db::select(
+    "SELECT *, loan_applications.id as loanid
+     FROM loan_applications
+     INNER JOIN clients ON loan_applications.clientid = clients.id
+     WHERE loan_applications.id = ?", [$id]
+);
+
+foreach ($client as $client) {
+    if ($client->client_pic) {
+        $clientPicPath = str_replace('storage/', '', $client->client_pic);
+        if (Storage::disk('public')->exists($clientPicPath)) {
+            $clientPicContent = Storage::disk('public')->get($clientPicPath);
+            $client->client_pic_base64 = 'data:image/' . pathinfo($clientPicPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientPicContent);
+        }
+    }
+
+    if ($client->client_add_sketch) {
+        $clientAddSketchPath = str_replace('storage/', '', $client->client_add_sketch);
+        if (Storage::disk('public')->exists($clientAddSketchPath)) {
+            $clientAddSketchContent = Storage::disk('public')->get($clientAddSketchPath);
+            $client->client_add_sketch_base64 = 'data:image/' . pathinfo($clientAddSketchPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientAddSketchContent);
+        }
+    }
+}
+
+$data = [$client];
+return view('loanapplication.viewdetails', compact('data', 'title'));
+
          
     }
     }
