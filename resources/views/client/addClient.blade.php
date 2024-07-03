@@ -9,8 +9,8 @@
             <a href="{{route('clients.index')}}">Go back</a>
             <h1>{{ $title }}</h2>
         </div>
-		<div class="col-md-12">
-			<form method="post" class="needs-validation cform" id="client_form" novalidate>
+		<div class="col-md-12 pb-4">
+			<form method="post" class="needs-validation cform" id="client_form" enctype="multipart/form-data" novalidate >
 				<div class="row">
 					<input type="hidden" name="id" id="id" value="{{ $client->id ?? '0' }}"/>
 					<div class="col-md-4 mb-3">
@@ -118,14 +118,16 @@
 						<textarea type="textarea" name="sp_children" id="sp_children" class="form-control " required placeholder="Enter sp children">{{ $client->sp_children ?? '' }}</textarea>
 					</div>
 					<div class="col-md-6 mb-3">
-						<label class="mb-2">Client pic</label>
+						<label class="mb-2">Client pic <span class="text-danger">(5mb)</span> </label>
 						<input type="file" name="client_pic" id="client_pic" class="form-control " required value="{{ $client->client_pic ?? '' }}" placeholder="Enter client pic"/>
+						<img src="{{ $client->client_pic_base64 ?? '' }}" class="img-thumbnail" id="client_pic_img" alt="Client Picture" height="200">
+
 					</div>
 					<div class="col-md-6 mb-3">
-						<label class="mb-2">Client add sketch</label>
+						<label class="mb-2">Client add sketch <span class="text-danger">(5mb)</span></label>
 						<input type="file" name="client_add_sketch" id="client_add_sketch" class="form-control " required value="{{ $client->client_add_sketch ?? '' }}" placeholder="Enter client add_sketch"/>
-					</div>
-					<div class="col-md-12 text-end">
+						<img src="{{ $client->client_add_sketch_base64 ?? '' }}" class="img-thumbnail" id="client_sketch_img" alt="Client Sketch" height="200">
+						<div class="col-md-12 text-end">
 						<button type="submit" class="btn btn-success" id="client_form_btn" >Save</button>
 						<!-- <button type="button" class="btn btn-danger delete {{ $client->id ?? 'd-none'}}" id="client_delete" >Delete</button> -->
 					</div>
