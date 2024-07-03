@@ -21,6 +21,7 @@ class LoanApplication extends Model
         'interest_amount',
         'clientId',
         'total_amount',
+        'daily_dues',
         'co_maker',
         'checkedBy',
         'approvedBy',

@@ -6,7 +6,7 @@
 		<div class="col-md-6 text-capitalize"><h1>Loan Application Management</h2></div>
 		<div class="col-md-6 text-end"><a href="{{ route('loan-applications.create') }}" class="btn btn-primary">New Loan Application</a></div>
 		<div class="col-md-12">
-			<table class="table table-bordered table-striped" id="tbl_client" style="width: 100%;"></table>
+			<table class="table table-bordered table-striped" id="tbl_loans" style="width: 100%;"></table>
 		</div>
 	</div>
 </div>

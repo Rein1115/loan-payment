@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('interest_amount', 8, 2);
             $table->unsignedBigInteger('clientId');
             $table->decimal('total_amount', 8, 2);
+            $table->decimal('daily_dues', 8, 2);
             $table->string('co_maker');
             $table->string('checkedBy');
             $table->string('approvedBy');
