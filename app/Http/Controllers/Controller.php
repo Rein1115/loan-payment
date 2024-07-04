@@ -99,7 +99,8 @@ class Controller extends BaseController
         $type = Auth::user()->account_type;
         $user = Auth::user()->id;
 
-        $function = DB::select('SELECT * FROM menufunctions WHERE description = ? OR type =?  ', [$desc,$type]);
+        $function = [];
+        $function = DB::select('SELECT * FROM menufunctions WHERE description = ?  OR type =?  ', [$desc,$type]);
        
         $response = [];
         $users = [];
@@ -121,11 +122,12 @@ class Controller extends BaseController
                     ];
                 }
             }
+
             $response = [
-                "description" => $function[$i],
+                "description" => isset($function[$i]) ? $function[$i]: []  ,
                 "usermenu" => $users,
                 "function" => isset($usersf) ? $usersf : []
-             ] ;
+             ];
         }
         return $response;
     }

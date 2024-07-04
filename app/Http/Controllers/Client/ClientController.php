@@ -7,22 +7,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Client;
-
+use Auth;
 class ClientController extends Controller
 {
 	public function index()
     {
-	
-        $data = $this->menus();
-        return view('client.index', compact('data'));
+        $desc = 'Client';    
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+            $data = $this->menus();
+            return view('client.index', compact('data'));
+        }
+        else{
+            return view('pages-error-404');
+        }
     }
 
     // Show the form for creating a new resource.
     public function create()
     {
-        $data = $this->menus();
-        $title = 'Add Client';
-        return view('client.addClient', compact('title', 'data'));
+        $desc = 'Client';    
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+            $data = $this->menus();
+            $title = 'Add Client';
+            return view('client.addClient', compact('title', 'data'));
+        }
+        else{
+            return view('pages-error-404');
+        }
     }
 
     // Store a newly created resource in storage.
@@ -122,27 +139,45 @@ class ClientController extends Controller
     // Show the form for editing the specified resource.
     public function edit($id)
     {
+
+        $desc = 'Client';    
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+         
+
         $title = 'Edit Client';
-    $client = Client::findOrFail($id);
-
-    // Convert image paths to base64 encoded strings if they exist
-    if ($client->client_pic) {
-        $clientPicPath = str_replace('storage/', '', $client->client_pic);
-        if (Storage::disk('public')->exists($clientPicPath)) {
-            $clientPicContent = Storage::disk('public')->get($clientPicPath);
-            $client->client_pic_base64 = 'data:image/' . pathinfo($clientPicPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientPicContent);
+        $client = Client::findOrFail($id);
+    
+        // Convert image paths to base64 encoded strings if they exist
+        if ($client->client_pic) {
+            $clientPicPath = str_replace('storage/', '', $client->client_pic);
+            if (Storage::disk('public')->exists($clientPicPath)) {
+                $clientPicContent = Storage::disk('public')->get($clientPicPath);
+                $client->client_pic_base64 = 'data:image/' . pathinfo($clientPicPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientPicContent);
+            }
         }
-    }
-
-    if ($client->client_add_sketch) {
-        $clientAddSketchPath = str_replace('storage/', '', $client->client_add_sketch);
-        if (Storage::disk('public')->exists($clientAddSketchPath)) {
-            $clientAddSketchContent = Storage::disk('public')->get($clientAddSketchPath);
-            $client->client_add_sketch_base64 = 'data:image/' . pathinfo($clientAddSketchPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientAddSketchContent);
+    
+        if ($client->client_add_sketch) {
+            $clientAddSketchPath = str_replace('storage/', '', $client->client_add_sketch);
+            if (Storage::disk('public')->exists($clientAddSketchPath)) {
+                $clientAddSketchContent = Storage::disk('public')->get($clientAddSketchPath);
+                $client->client_add_sketch_base64 = 'data:image/' . pathinfo($clientAddSketchPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($clientAddSketchContent);
+            }
         }
-    }
+    
+        return view('client.addClient', compact('client', 'title'));
 
-    return view('client.addClient', compact('client', 'title'));
+        }
+        else{
+            return view('pages-error-404');
+        }
+
+
+        
+
+
     }
 
     // Update the specified resource in storage.

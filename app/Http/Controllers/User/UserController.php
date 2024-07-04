@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class UserController extends Controller
 {
@@ -14,9 +15,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = $this->menus();
 
-        return view('User.user-list', compact('data'));
+        $desc = 'user';
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+        // return $response;
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+            $data = $this->menus();
+
+            return view('User.user-list', compact('data'));
+        }
+        else{
+            return view('pages-error-404');
+        }
     }
 
     /**

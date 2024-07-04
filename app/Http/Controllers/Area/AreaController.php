@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Area;
 use Illuminate\Support\Facades\Validator;
 use Exception; // Import PHP's native Exception class
+use Auth;
 
 
 class AreaController extends Controller
@@ -17,17 +18,32 @@ class AreaController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $area = Area::all();
 
-            return response()->json(['success'=>true,'response' => $area]);
+
+        $desc = 'area';
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+            if($request->ajax()){
+                $area = Area::all();
+    
+                return response()->json(['success'=>true,'response' => $area]);
+            }
+    
+            $data = $this->menus();
+    
+            return view('area.area-list', compact('data'));
+        }
+        else{
+            return view('pages-error-404');
         }
 
-        $data = $this->menus();
 
 
 
-        return view('area.area-list', compact('data'));
+
     }
 
     /**
@@ -94,9 +110,6 @@ class AreaController extends Controller
             return response()->json(['success' => false, 'response' => $e->getMessage()]);
 
         }
-
-        
-
 
     }
 

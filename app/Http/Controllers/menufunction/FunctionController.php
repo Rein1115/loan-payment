@@ -20,7 +20,8 @@ class FunctionController extends Controller
         $type = Auth::user()->account_type;
         $response = $this->authencation($desc);
 
-        if(!empty($response['function']['function']) ||  $response['description']->type === $type){
+
+        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
             $data = $this->menus();
             if ($request->ajax()) {
                 $data = DB::select('SELECT mm.description, mf.transNo FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id GROUP BY mf.transNo, mm.description');

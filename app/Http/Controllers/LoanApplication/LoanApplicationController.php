@@ -9,6 +9,7 @@ use App\Models\Client;
 use Illuminate\Support\Facades\Storage;
 use Validator;
 use DB;
+use Auth;
 
 class LoanApplicationController extends Controller
 {
@@ -18,9 +19,21 @@ class LoanApplicationController extends Controller
     //index function
     public function index()
     {
-        // resource functions
-        $data = $this->menus();
-        return view('loanapplication.index', compact('data'));
+
+
+      $desc = 'loan-applications';
+      $type = Auth::user()->account_type;
+      $response = $this->authencation($desc);
+
+      // return $response;
+
+      if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+          $data = $this->menus();
+          return view('loanapplication.index', compact('data'));
+      }
+      else{
+          return view('pages-error-404');
+      }
     }
     //create function
     public function create()
@@ -111,10 +124,23 @@ return view('loanapplication.viewdetails', compact('data', 'title'));
     //edit function
     public function edit($id)
     {
-      $title = 'Edit Loan Application';
+
+
+      $desc = 'loan-applications';
+      $type = Auth::user()->account_type;
+      $response = $this->authencation($desc);
+
+      // return $response;
+      if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+        $title = 'Edit Loan Application';
         $loan = LoanApplication::findOrFail($id);
         $clients = Client::all();
         return view('loanapplication.addnewapplication', compact('loan','clients', 'title'));
+      }
+      else{
+          return view('pages-error-404');
+      }
+
     }
     //update function
     public function update(Request $request, $id)

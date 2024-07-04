@@ -8,6 +8,7 @@ use App\Models\Collector;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 class CollectorController extends Controller
 {
     /**
@@ -15,15 +16,14 @@ class CollectorController extends Controller
      */
     public function index(Request $request)
     {   
-        $data = $this->menus();
-        
-        $datas = DB::select('SELECT c.id as ids,c.* , a.* FROM collectors as c INNER JOIN areas as a ON c.areaid = a.id');
+        // $f = DB::select('SELECT * FROM menufunctions WHERE description = ? AND type = ? ', [$desc,$type]);
+            $datas = DB::select('SELECT c.id as ids,c.* , a.* FROM collectors as c INNER JOIN areas as a ON c.areaid = a.id');
 
-        if($request->ajax()){
-            return response()->json(['success' => true, 'response' => $datas]);
-        }
-
-        return view('collector.collector-list',compact('data'));
+            if($request->ajax()){
+                return response()->json(['success' => true, 'response' => $datas]);
+            }
+            return view('collector.collector-list',compact('data'));
+       
     }
 
     /**
