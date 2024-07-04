@@ -92,53 +92,42 @@ class Controller extends BaseController
       
     }
 
-    // public function Userauth(){
-    //     // $userId = Auth::user()->id;
-    //     // $userType = Auth::user()->type;
-    //          $userId = 0;
-    //     $userType = 'cashier';
 
 
-    //     $acc['users'] = DB::select('SELECT * FROM users');
 
-    //     $response = [];
-    //     $menumod= [];
-    //     $userfunction = [];
-    //     for($u = 0; $u<count($acc['users']); $u++){
+    public function authencation(string $desc){
+        $type = Auth::user()->account_type;
+        $user = Auth::user()->id;
 
-    //         $acc['menumodules'] = DB::select('SELECT * FROM menumodules WHERE type = ?' , [$acc['users'][$u]->account_type]);
+        $function = DB::select('SELECT * FROM menufunctions WHERE description = ? OR type =?  ', [$desc,$type]);
+       
+        $response = [];
+        $users = [];
 
-    //         for($mm = 0 ; $mm < count($acc['menumodules']); $mm++){
-    //             $acc['menufunctions'] = DB::select('SELECT * FROM menufunctions WHERE mmodules_id =? ',[$acc['menumodules'][$mm]->id]); 
+  
+        for($i = 0; $i<count($function); $i++){
+            $usermenu = DB::select('SELECT * FROM usermodules WHERE mmodules_id = ? AND user_id =?', [$function[$i]->mmodules_id ,  $user ]);
+          
+            for($f =0 ; $f<count($usermenu); $f++){
+                $userfunction = DB::select('SELECT mf.id,uf.mmodules_id FROM userfunctions AS uf INNER JOIN menufunctions AS mf ON mf.id = uf.mfunctions_id  WHERE uf.mmodules_id = ? AND uf.user_id = ? ' , [$usermenu[$f]->mmodules_id,$user]);
+                $users = [
+                    "usermenu" => $usermenu[$f],
+                ];
 
-    //             $acc['usermodule'] = DB::select('SELECT * FROM usermodules WHERE user_id = ? AND mmodules_id = ? ', [$userId,$acc['users'][$u]->id]);
-
-    //             for($um = 0; $um < count($acc['usermodule']); $um++){
-    //                 $acc['userfunction'] = DB::select('SELECT * FROM userfunctions WHERE mmodules_id = ? AND type = ? ' , [$acc['usermodule'][$um]->id,$userId]);
-
-    //                 $userfunction[$um] = [
-    //                     "userfunction" => $acc['userfunction'][$um]->id,
-    //                     "usermodules" => $acc['usermodule'][$um]->id
-    //                 ];
-    //             }
-
-    //             $menumod[$mm] = [
-    //                 "menufunctions" => $acc['menufunctions'][$mm]->id,
-    //                 "userfunction" => $userfunction
-                    
-    //             ];
-
-    //         }
-
-
-    //         $response[$u] = [
-    //             "user" => $acc['users'][$u]->id,
-    //             "menumodules" => $menumod
-    //         ];
-
-    //     }
-
-
-    //     return $response;
-    // }
+                $usersf = [];
+                for($uf = 0; $uf<count($userfunction); $uf++){
+                    $usersf = [
+                        "function" => isset($userfunction[$uf]) ? $userfunction[$uf] : []
+                    ];
+                }
+            }
+            $response = [
+                "description" => $function[$i],
+                "usermenu" => $users,
+                "function" => isset($usersf) ? $usersf : []
+             ] ;
+        }
+        return $response;
+    }
+    
 }

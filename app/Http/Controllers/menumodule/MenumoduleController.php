@@ -18,20 +18,25 @@ class MenumoduleController extends Controller
      */
     public function index(Request $request)
     {
-        
-        $data = $this->menus();
-       
-        
-        if($request->ajax()){
-            $data = Menumodule::all();
 
-            return response()->json(['success' => true,'response' => $data]);
+        
+        $desc = 'MenuModules';
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
+
+        if(!empty($response['function']['function']) ||  $response['description']->type === $type){
+            $data = $this->menus();
+    
+            if($request->ajax()){
+                $data = Menumodule::all();
+
+                return response()->json(['success' => true,'response' => $data]);
+            }
+                return view('menumodule.menumodule-list',compact('data'));
         }
-
-
-            return view('menumodule.menumodule-list',compact('data'));
-
-        
+        else{
+            return view('pages-error-404');
+        }
     }
 
     /**
