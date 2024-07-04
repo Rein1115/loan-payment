@@ -15,29 +15,22 @@ class FunctionController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
- 
-        $data = $this->menus();
-        // $data = $this->Userauth();
-        // return  $data;
-    
-        if($request->ajax()){
-            $data = DB::select('SELECT mm.description,mf.transNo FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id GROUP BY   mf.transNo, mm.description');
-            return response()->json(['success' => true,'response' => $data]);
-        }
-            return view('menufunction.menufunction-list',compact('data'));
+    {    
+        $desc = 'MenuFunction';
+        $type = Auth::user()->account_type;
+        $response = $this->authencation($desc);
 
-        // $descriptionmenu = 'System';
-        // $descriptionfunctionId = 4;
-        // $type = 'admin';
-        
-        // $query = DB::select('SELECT * 
-        //     FROM menumodules AS mm 
-        //     INNER JOIN menufunctions AS mf ON mm.id = mf.mmodules_id 
-        //     WHERE mm.description = ? AND mf.mmodules_id = ? AND mm.type = ?',
-        //     [$descriptionmenu, $descriptionfunctionId, $type]);
-    
-        // return $query;
+        if(!empty($response['function']['function']) ||  $response['description']->type === $type){
+            $data = $this->menus();
+            if ($request->ajax()) {
+                $data = DB::select('SELECT mm.description, mf.transNo FROM menufunctions AS mf INNER JOIN menumodules AS mm ON mm.id = mf.mmodules_id GROUP BY mf.transNo, mm.description');
+                return response()->json(['success' => true, 'response' => $data]);
+            }
+            return view('menufunction.menufunction-list', compact('data'));
+        }
+        else{
+            return view('pages-error-404');
+        }
     }
 
     /**
