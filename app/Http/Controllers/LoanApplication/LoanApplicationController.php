@@ -13,14 +13,9 @@ use Auth;
 
 class LoanApplicationController extends Controller
 {
-  //resource functions
-
-
     //index function
     public function index()
     {
-
-
       $desc = 'Loan Application';
       $response = $this->Auth($desc);
       // dd($response);

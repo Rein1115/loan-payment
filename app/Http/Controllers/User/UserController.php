@@ -21,7 +21,6 @@ class UserController extends Controller
 
         if($response){
             $data = $this->menus();
-
             return view('User.user-list', compact('data'));
         }
         else{

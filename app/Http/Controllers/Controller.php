@@ -95,42 +95,42 @@ class Controller extends BaseController
 
 
 
-    public function authencation(string $desc){
-        $type = Auth::user()->account_type;
-        $user = Auth::user()->id;
+    // public function authencation(string $desc){
+    //     $type = Auth::user()->account_type;
+    //     $user = Auth::user()->id;
 
-        $function = [];
-        $function = DB::select('SELECT * FROM menufunctions WHERE description = ?  OR type =?  ', [$desc,$type]);
+    //     $function = [];
+    //     $function = DB::select('SELECT * FROM menufunctions WHERE description = ?  OR type =?  ', [$desc,$type]);
        
-        $response = [];
-        $users = [];
+    //     $response = [];
+    //     $users = [];
 
   
-        for($i = 0; $i<count($function); $i++){
-            $usermenu = DB::select('SELECT * FROM usermodules WHERE mmodules_id = ? AND user_id =?', [$function[$i]->mmodules_id ,  $user ]);
+    //     for($i = 0; $i<count($function); $i++){
+    //         $usermenu = DB::select('SELECT * FROM usermodules WHERE mmodules_id = ? AND user_id =?', [$function[$i]->mmodules_id ,  $user ]);
           
-            for($f =0 ; $f<count($usermenu); $f++){
-                $userfunction = DB::select('SELECT mf.id,uf.mmodules_id FROM userfunctions AS uf INNER JOIN menufunctions AS mf ON mf.id = uf.mfunctions_id  WHERE uf.mmodules_id = ? AND uf.user_id = ? ' , [$usermenu[$f]->mmodules_id,$user]);
-                $users = [
-                    "usermenu" => $usermenu[$f],
-                ];
+    //         for($f =0 ; $f<count($usermenu); $f++){
+    //             $userfunction = DB::select('SELECT mf.id,uf.mmodules_id FROM userfunctions AS uf INNER JOIN menufunctions AS mf ON mf.id = uf.mfunctions_id  WHERE uf.mmodules_id = ? AND uf.user_id = ? ' , [$usermenu[$f]->mmodules_id,$user]);
+    //             $users = [
+    //                 "usermenu" => $usermenu[$f],
+    //             ];
 
-                $usersf = [];
-                for($uf = 0; $uf<count($userfunction); $uf++){
-                    $usersf = [
-                        "function" => isset($userfunction[$uf]) ? $userfunction[$uf] : []
-                    ];
-                }
-            }
+    //             $usersf = [];
+    //             for($uf = 0; $uf<count($userfunction); $uf++){
+    //                 $usersf = [
+    //                     "function" => isset($userfunction[$uf]) ? $userfunction[$uf] : []
+    //                 ];
+    //             }
+    //         }
 
-            $response = [
-                "description" => isset($function[$i]) ? $function[$i]: []  ,
-                "usermenu" => $users,
-                "function" => isset($usersf) ? $usersf : []
-             ];
-        }
-        return $response;
-    }
+    //         $response = [
+    //             "description" => isset($function[$i]) ? $function[$i]: []  ,
+    //             "usermenu" => $users,
+    //             "function" => isset($usersf) ? $usersf : []
+    //          ];
+    //     }
+    //     return $response;
+    // }
 
 
 
@@ -138,7 +138,6 @@ class Controller extends BaseController
         $type = Auth::user()->account_type;
 
         $sql = DB::select('SELECT * FROM menufunctions WHERE description = ? AND type = ?  ',[$desc,$type]);
-
         return $sql;
     }
     
