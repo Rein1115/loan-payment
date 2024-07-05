@@ -17,12 +17,9 @@ class UserController extends Controller
     {
 
         $desc = 'user';
-        $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
+        $response = $this->Auth($desc);
 
-        // return $response;
-
-        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+        if($response){
             $data = $this->menus();
 
             return view('User.user-list', compact('data'));

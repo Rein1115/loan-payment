@@ -21,13 +21,11 @@ class LoanApplicationController extends Controller
     {
 
 
-      $desc = 'loan-applications';
-      $type = Auth::user()->account_type;
-      $response = $this->authencation($desc);
+      $desc = 'Loan Application';
+      $response = $this->Auth($desc);
+      // dd($response);
 
-      // return $response;
-
-      if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+      if($response){
           $data = $this->menus();
           return view('loanapplication.index', compact('data'));
       }
@@ -38,9 +36,20 @@ class LoanApplicationController extends Controller
     //create function
     public function create()
     {
-      $title = "Create New Loan Application";
-      $clients = DB::SELECT("SELECT * FROM clients ORDER BY id DESC"); 
-      return view('loanapplication.addnewapplication', compact('title','clients'));
+
+      $desc = 'Loan Application';
+   
+      $response = $this->Auth($desc);
+
+      if($response){
+        $title = "Create New Loan Application";
+        $clients = DB::SELECT("SELECT * FROM clients ORDER BY id DESC"); 
+        return view('loanapplication.addnewapplication', compact('title','clients'));
+      }else{
+        return view('pages-error-404');
+      }
+
+      
     }
     //store function
     public function store(Request $request)
@@ -126,12 +135,10 @@ return view('loanapplication.viewdetails', compact('data', 'title'));
     {
 
 
-      $desc = 'loan-applications';
-      $type = Auth::user()->account_type;
-      $response = $this->authencation($desc);
+      $desc = 'Loan Application';
+      $response = $this->Auth($desc);
 
-      // return $response;
-      if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+      if($response){
         $title = 'Edit Loan Application';
         $loan = LoanApplication::findOrFail($id);
         $clients = Client::all();

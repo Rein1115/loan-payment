@@ -13,10 +13,9 @@ class ClientController extends Controller
 	public function index()
     {
         $desc = 'Client';    
-        $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
+        $response = $this->Auth($desc);
 
-        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+        if($response){
             $data = $this->menus();
             return view('client.index', compact('data'));
         }
@@ -29,10 +28,10 @@ class ClientController extends Controller
     public function create()
     {
         $desc = 'Client';    
-        $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
+       
+        $response = $this->Auth($desc);
 
-        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+        if($response){
             $data = $this->menus();
             $title = 'Add Client';
             return view('client.addClient', compact('title', 'data'));
@@ -141,10 +140,9 @@ class ClientController extends Controller
     {
 
         $desc = 'Client';    
-        $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
-
-        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+      
+        $response = $this->Auth($desc);
+        if($response){
          
 
         $title = 'Edit Client';

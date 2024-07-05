@@ -22,11 +22,11 @@ class MenumoduleController extends Controller
         
         $desc = 'MenuModules';
         $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
 
-        if(!empty($response['function']['function']) ||  $response['description']->type === $type){
+
+        $response = $this->Auth($desc);
+        if($response){
             $data = $this->menus();
-    
             if($request->ajax()){
                 $data = Menumodule::all();
 

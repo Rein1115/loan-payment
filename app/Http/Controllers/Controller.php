@@ -131,5 +131,15 @@ class Controller extends BaseController
         }
         return $response;
     }
+
+
+
+    public function Auth(string $desc){
+        $type = Auth::user()->account_type;
+
+        $sql = DB::select('SELECT * FROM menufunctions WHERE description = ? AND type = ?  ',[$desc,$type]);
+
+        return $sql;
+    }
     
 }

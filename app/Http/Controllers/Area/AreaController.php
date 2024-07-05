@@ -21,14 +21,14 @@ class AreaController extends Controller
 
 
         $desc = 'area';
-        $type = Auth::user()->account_type;
-        $response = $this->authencation($desc);
+       
+        $response = $this->Auth($desc);
 
 
-        if(!empty($response['function']['function']) ||  !empty($response['description']->type === $type)){
+        if($response){
             if($request->ajax()){
                 $area = Area::all();
-    
+
                 return response()->json(['success'=>true,'response' => $area]);
             }
     

@@ -16,14 +16,21 @@ class CollectorController extends Controller
      */
     public function index(Request $request)
     {   
-        // $f = DB::select('SELECT * FROM menufunctions WHERE description = ? AND type = ? ', [$desc,$type]);
+
+        $desc = "Collector";
+
+        $response = $this->Auth($desc);
+        if($response){
+            $data = $this->menus();
             $datas = DB::select('SELECT c.id as ids,c.* , a.* FROM collectors as c INNER JOIN areas as a ON c.areaid = a.id');
 
             if($request->ajax()){
                 return response()->json(['success' => true, 'response' => $datas]);
             }
             return view('collector.collector-list',compact('data'));
-       
+        }else{
+            return view('pages-error-404');
+        }  
     }
 
     /**
